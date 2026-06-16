@@ -2,8 +2,7 @@
 
 import { motion } from "motion/react";
 
-// TODO: 把名字换成你自己的(当前为根据目录名的推测值)
-const NAME = "苏涵宇";
+const NAME = "余苏涵";
 const TAGLINE = "专注 LLM 应用层:从评测、Prompt 到 RAG 与部署的全链路交付";
 
 export default function Hero() {
