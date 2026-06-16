@@ -1,30 +1,56 @@
 "use client";
 
 import { motion } from "motion/react";
+import { profile } from "@/data/profile";
 
-const NAME = "余苏涵";
-const TAGLINE = "专注 LLM 应用层:从评测、Prompt 到 RAG 与部署的全链路交付";
+const fade = {
+  initial: { opacity: 0, y: 16 },
+  animate: { opacity: 1, y: 0 },
+};
 
 export default function Hero() {
   return (
     <section className="flex min-h-screen flex-col items-center justify-center px-6 text-center">
       <motion.h1
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
+        {...fade}
         transition={{ duration: 0.6, ease: "easeOut" }}
         className="text-4xl font-semibold tracking-tight sm:text-6xl"
       >
-        {NAME}
+        {profile.name}
       </motion.h1>
 
       <motion.p
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
+        {...fade}
         transition={{ duration: 0.6, ease: "easeOut", delay: 0.15 }}
         className="mt-6 max-w-2xl text-base leading-relaxed text-muted sm:text-lg"
       >
-        {TAGLINE}
+        {profile.tagline}
       </motion.p>
+
+      <motion.div
+        {...fade}
+        transition={{ duration: 0.6, ease: "easeOut", delay: 0.3 }}
+        className="mt-10 flex flex-col gap-3 sm:flex-row"
+      >
+        <a
+          href="#products"
+          className="rounded-full bg-accent px-6 py-2.5 text-sm font-medium text-accent-foreground transition-opacity hover:opacity-90"
+        >
+          看作品
+        </a>
+        <a
+          href={profile.resumeUrl}
+          className="rounded-full border border-border px-6 py-2.5 text-sm font-medium transition-colors hover:border-foreground"
+        >
+          下简历
+        </a>
+        <a
+          href="#contact"
+          className="rounded-full border border-border px-6 py-2.5 text-sm font-medium transition-colors hover:border-foreground"
+        >
+          联系我
+        </a>
+      </motion.div>
     </section>
   );
 }

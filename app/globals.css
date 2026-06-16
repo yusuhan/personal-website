@@ -44,6 +44,11 @@
     "Helvetica Neue", Arial, sans-serif;
 }
 
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem; /* 锚点定位时为固定 Nav 留出空间 */
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
