@@ -63,6 +63,31 @@ html {
   scroll-padding-top: 5rem; /* 锚点定位时为固定 Nav 留出空间 */
 }
 
+/* ============================================================
+ * 进场动画 —— SSR / 无 JS / 水合失败 / 减弱动效 时,内容默认完整可见。
+ * 仅在 <html class="js">(由前置内联脚本添加)且用户未开启 reduced-motion
+ * 时,才施加「初始隐藏 → 进场淡入上移」。
+ * ============================================================ */
+[data-reveal] {
+  opacity: 1; /* 默认可见,是兜底基线 */
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html.js [data-reveal] {
+    opacity: 0;
+    transform: translateY(20px);
+    transition:
+      opacity 0.5s ease-out,
+      transform 0.5s ease-out;
+    transition-delay: var(--reveal-delay, 0s);
+    will-change: opacity, transform;
+  }
+  html.js [data-reveal].is-visible {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 body {
   background: var(--background);
   color: var(--foreground);

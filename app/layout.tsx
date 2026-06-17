@@ -21,8 +21,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="zh-CN" className={`${inter.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col">{children}</body>
+    <html
+      lang="zh-CN"
+      suppressHydrationWarning
+      className={`${inter.variable} h-full antialiased`}
+    >
+      <body className="min-h-full flex flex-col">
+        {/* 首屏绘制前同步给 <html> 加 js 类:只有 JS 可用时才会应用进场初始隐藏态,
+            从而保证禁用 JS / 水合失败时内容默认完整可见,且不产生闪烁。 */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: "document.documentElement.classList.add('js')",
+          }}
+        />
+        {children}
+      </body>
     </html>
   );
 }

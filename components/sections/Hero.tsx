@@ -1,66 +1,53 @@
-"use client";
-
-import { motion } from "motion/react";
+import Reveal from "@/components/ui/Reveal";
 import { profile } from "@/data/profile";
 
-const fade = {
-  initial: { opacity: 0, y: 16 },
-  animate: { opacity: 1, y: 0 },
-};
-
+// 名字 → 标语 → 副标语 → CTA 依次入场(靠 Reveal 的 delay 错峰)。
+// 不再硬设 opacity:0:无 JS / 减弱动效时由 CSS 兜底,内容默认完整可见。
 export default function Hero() {
   return (
     <section className="flex min-h-screen flex-col items-center justify-center px-6 text-center">
-      <motion.h1
-        {...fade}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-        className="text-4xl font-semibold tracking-tight sm:text-6xl"
-      >
-        {profile.name}
-      </motion.h1>
+      <Reveal>
+        <h1 className="text-4xl font-semibold tracking-tight sm:text-6xl">
+          {profile.name}
+        </h1>
+      </Reveal>
 
-      <motion.p
-        {...fade}
-        transition={{ duration: 0.6, ease: "easeOut", delay: 0.15 }}
-        className="mt-6 max-w-2xl text-base leading-relaxed text-foreground sm:text-lg"
-      >
-        {profile.tagline}
-      </motion.p>
+      <Reveal delay={0.15}>
+        <p className="mt-6 max-w-2xl text-base leading-relaxed text-foreground sm:text-lg">
+          {profile.tagline}
+        </p>
+      </Reveal>
 
-      <motion.p
-        {...fade}
-        transition={{ duration: 0.6, ease: "easeOut", delay: 0.25 }}
-        className="mt-3 max-w-2xl text-sm leading-relaxed text-muted sm:text-base"
-      >
-        {profile.subTagline}
-      </motion.p>
+      <Reveal delay={0.25}>
+        <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted sm:text-base">
+          {profile.subTagline}
+        </p>
+      </Reveal>
 
-      <motion.div
-        {...fade}
-        transition={{ duration: 0.6, ease: "easeOut", delay: 0.4 }}
-        className="mt-10 flex flex-col gap-3 sm:flex-row"
-      >
-        <a
-          href="#products"
-          className="rounded-full bg-accent px-6 py-2.5 text-sm font-medium text-accent-foreground transition-colors hover:bg-accent-hover"
-        >
-          看作品
-        </a>
-        {profile.resumeUrl && (
+      <Reveal delay={0.4}>
+        <div className="mt-10 flex flex-col gap-3 sm:flex-row">
           <a
-            href={profile.resumeUrl}
+            href="#products"
+            className="rounded-full bg-accent px-6 py-2.5 text-sm font-medium text-accent-foreground transition-colors hover:bg-accent-hover"
+          >
+            看作品
+          </a>
+          {profile.resumeUrl && (
+            <a
+              href={profile.resumeUrl}
+              className="rounded-full border border-border px-6 py-2.5 text-sm font-medium transition-colors hover:border-foreground"
+            >
+              下简历
+            </a>
+          )}
+          <a
+            href="#contact"
             className="rounded-full border border-border px-6 py-2.5 text-sm font-medium transition-colors hover:border-foreground"
           >
-            下简历
+            联系我
           </a>
-        )}
-        <a
-          href="#contact"
-          className="rounded-full border border-border px-6 py-2.5 text-sm font-medium transition-colors hover:border-foreground"
-        >
-          联系我
-        </a>
-      </motion.div>
+        </div>
+      </Reveal>
     </section>
   );
 }
