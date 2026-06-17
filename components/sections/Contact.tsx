@@ -16,7 +16,7 @@ export default function Contact() {
 
           <a
             href={`mailto:${profile.email}`}
-            className="mt-4 inline-block text-xl font-medium tracking-tight hover:text-accent"
+            className="mt-4 inline-flex min-h-[44px] items-center text-xl font-medium tracking-tight hover:text-accent"
           >
             {profile.email}
           </a>
@@ -25,7 +25,7 @@ export default function Contact() {
             {profile.resumeUrl && (
               <a
                 href={profile.resumeUrl}
-                className="rounded-full bg-accent px-6 py-2.5 text-sm font-medium text-accent-foreground transition-colors hover:bg-accent-hover"
+                className="inline-flex min-h-[44px] items-center justify-center rounded-full bg-accent px-6 py-2.5 text-sm font-medium text-accent-foreground transition-colors hover:bg-accent-hover"
               >
                 下载简历
               </a>
@@ -36,7 +36,7 @@ export default function Contact() {
                 href={s.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="link-underline text-sm font-medium text-muted transition-colors hover:text-foreground"
+                className="link-underline inline-flex items-center text-sm font-medium text-muted transition-colors hover:text-foreground max-sm:min-h-[44px]"
               >
                 {s.label} →
               </a>

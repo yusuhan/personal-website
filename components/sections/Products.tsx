@@ -88,7 +88,7 @@ export default function Products() {
                           href={l.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="link-underline text-sm font-medium text-accent"
+                          className="link-underline inline-flex items-center text-sm font-medium text-accent max-sm:min-h-[44px]"
                         >
                           {l.label} →
                         </a>

@@ -28,21 +28,21 @@ export default function Hero() {
         <div className="mt-10 flex flex-col gap-3 sm:flex-row">
           <a
             href="#products"
-            className="rounded-full bg-accent px-6 py-2.5 text-sm font-medium text-accent-foreground transition-colors hover:bg-accent-hover"
+            className="inline-flex min-h-[44px] items-center justify-center rounded-full bg-accent px-6 py-2.5 text-sm font-medium text-accent-foreground transition-colors hover:bg-accent-hover"
           >
             看作品
           </a>
           {profile.resumeUrl && (
             <a
               href={profile.resumeUrl}
-              className="rounded-full border border-border px-6 py-2.5 text-sm font-medium transition-colors hover:border-foreground"
+              className="inline-flex min-h-[44px] items-center justify-center rounded-full border border-border px-6 py-2.5 text-sm font-medium transition-colors hover:border-foreground"
             >
               下简历
             </a>
           )}
           <a
             href="#contact"
-            className="rounded-full border border-border px-6 py-2.5 text-sm font-medium transition-colors hover:border-foreground"
+            className="inline-flex min-h-[44px] items-center justify-center rounded-full border border-border px-6 py-2.5 text-sm font-medium transition-colors hover:border-foreground"
           >
             联系我
           </a>

@@ -115,7 +115,7 @@ export default function Nav() {
                 href={l.href}
                 onClick={() => setOpen(false)}
                 aria-current={active === l.id ? "true" : undefined}
-                className={linkClass(l.id, "block py-2")}
+                className={linkClass(l.id, "flex min-h-[44px] items-center")}
               >
                 {l.label}
               </a>
