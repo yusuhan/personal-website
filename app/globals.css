@@ -109,6 +109,23 @@ html {
   }
 }
 
+/* 仅位移、不淡入的进场:用于 LCP 元素(Hero 大标题),
+ * 元素立即以满不透明度绘制,不拖慢 LCP,仍保留细微上浮的"活感"。 */
+@media (prefers-reduced-motion: no-preference) {
+  html.js [data-reveal-rise] {
+    animation: reveal-rise 0.6s ease-out both;
+    animation-delay: var(--reveal-delay, 0s);
+  }
+}
+@keyframes reveal-rise {
+  from {
+    transform: translateY(14px);
+  }
+  to {
+    transform: none;
+  }
+}
+
 /* ============================================================
  * 装饰性交互(锦上添花,不影响内容可见性)
  * ============================================================ */
@@ -144,4 +161,69 @@ body {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
   border-radius: 4px;
+}
+
+/* ============================================================
+ * Hero 装饰层 —— 纯装饰、pointer-events:none、不影响内容渲染。
+ * 克制优先:克莱因蓝透明度极低(4%-8%),动效极慢(20-30s),
+ * 用 transform/opacity(GPU 加速),不触发重排。
+ * 全程尊重 prefers-reduced-motion。
+ * ============================================================ */
+
+/* 1) 极淡的克莱因蓝流动渐变:浅冷底上隐约有蓝调在极缓慢呼吸 */
+.hero-aurora {
+  position: absolute;
+  inset: -25%;
+  background:
+    radial-gradient(38% 38% at 22% 32%, rgba(0, 47, 167, 0.07), transparent 70%),
+    radial-gradient(32% 32% at 78% 22%, rgba(0, 47, 167, 0.05), transparent 70%),
+    radial-gradient(44% 44% at 64% 82%, rgba(0, 47, 167, 0.06), transparent 72%);
+  will-change: transform;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .hero-aurora {
+    animation: hero-drift 26s ease-in-out infinite alternate;
+  }
+}
+@keyframes hero-drift {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(2.2%, -1.6%, 0) scale(1.06);
+  }
+  100% {
+    transform: translate3d(-1.8%, 1.4%, 0) scale(1.03);
+  }
+}
+
+/* 3) 极淡网格,增加工程感纹理;用遮罩让它自然淡出,不铺满 */
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, rgba(0, 47, 167, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 47, 167, 0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  -webkit-mask-image: radial-gradient(circle at 28% 42%, #000, transparent 78%);
+  mask-image: radial-gradient(circle at 28% 42%, #000, transparent 78%);
+}
+
+/* 2) 跟随鼠标的克莱因蓝径向光晕:大半径、低透明度、带阻尼延迟 */
+.hero-glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 640px;
+  height: 640px;
+  margin: -320px 0 0 -320px; /* 以光标为中心 */
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 47, 167, 0.09), transparent 64%);
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform, opacity;
+  /* 阻尼跟随:位移用较长缓动,产生"拖尾/迟滞"手感 */
+  transition:
+    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.4s ease-out;
 }
