@@ -4,15 +4,16 @@ import { useEffect, useState } from "react";
 import { profile } from "@/data/profile";
 
 const links = [
-  { label: "作品", href: "#products" },
-  { label: "文章", href: "#writing" },
-  { label: "经历", href: "#about" },
-  { label: "联系", href: "#contact" },
+  { label: "作品", href: "#products", id: "products" },
+  { label: "文章", href: "#writing", id: "writing" },
+  { label: "经历", href: "#about", id: "about" },
+  { label: "联系", href: "#contact", id: "contact" },
 ];
 
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [active, setActive] = useState<string>("");
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -20,6 +21,34 @@ export default function Nav() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  // 滚动高亮当前所在区块(纯装饰:只切换颜色,无位移,reduced-motion 无需特殊处理)
+  useEffect(() => {
+    const sections = links
+      .map((l) => document.getElementById(l.id))
+      .filter((el): el is HTMLElement => el !== null);
+    if (sections.length === 0) return;
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+        if (visible[0]) setActive(visible[0].target.id);
+      },
+      // 取视口中部一条窄带做判定,避免多区块同时高亮
+      { rootMargin: "-45% 0px -45% 0px", threshold: [0, 0.5, 1] },
+    );
+    sections.forEach((s) => io.observe(s));
+    return () => io.disconnect();
+  }, []);
+
+  const linkClass = (id: string, base: string) =>
+    `${base} transition-colors ${
+      active === id
+        ? "text-foreground font-medium"
+        : "text-muted hover:text-foreground"
+    }`;
 
   return (
     <header
@@ -40,7 +69,8 @@ export default function Nav() {
             <li key={l.href}>
               <a
                 href={l.href}
-                className="text-muted transition-colors hover:text-foreground"
+                aria-current={active === l.id ? "true" : undefined}
+                className={linkClass(l.id, "")}
               >
                 {l.label}
               </a>
@@ -54,7 +84,7 @@ export default function Nav() {
           aria-label="菜单"
           aria-expanded={open}
           onClick={() => setOpen((v) => !v)}
-          className="flex h-9 w-9 items-center justify-center sm:hidden"
+          className="flex h-11 w-11 items-center justify-center sm:hidden"
         >
           <div className="space-y-1.5">
             <span
@@ -84,7 +114,8 @@ export default function Nav() {
               <a
                 href={l.href}
                 onClick={() => setOpen(false)}
-                className="block py-2 text-muted transition-colors hover:text-foreground"
+                aria-current={active === l.id ? "true" : undefined}
+                className={linkClass(l.id, "block py-2")}
               >
                 {l.label}
               </a>

@@ -88,6 +88,28 @@ html {
   }
 }
 
+/* ============================================================
+ * 装饰性交互(锦上添花,不影响内容可见性)
+ * ============================================================ */
+
+/* 外链下划线:hover 时由左向右展开。装饰性,默认无下划线。 */
+.link-underline {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  background-size: 0% 1px;
+  transition: background-size 0.25s ease-out;
+}
+.link-underline:hover {
+  background-size: 100% 1px;
+}
+/* 减弱动效:直接出现下划线,不做展开过渡 */
+@media (prefers-reduced-motion: reduce) {
+  .link-underline {
+    transition: none;
+  }
+}
+
 body {
   background: var(--background);
   color: var(--foreground);

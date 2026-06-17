@@ -20,7 +20,7 @@ export default function Products() {
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
           {products.map((p, i) => (
             <Reveal key={p.title} delay={i * 0.08}>
-              <article className="flex h-full flex-col overflow-hidden rounded-xl border border-border bg-surface shadow-card transition-colors">
+              <article className="flex h-full flex-col overflow-hidden rounded-xl border border-border bg-surface shadow-card transition duration-300 ease-out hover:border-accent hover:shadow-card-hover motion-safe:hover:-translate-y-1">
                 {/* 缩略图位 */}
                 <div className="flex aspect-video items-center justify-center border-b border-border bg-foreground/[0.03] text-xs text-muted">
                   {p.image ? (
@@ -88,7 +88,7 @@ export default function Products() {
                           href={l.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-sm font-medium text-accent hover:underline"
+                          className="link-underline text-sm font-medium text-accent"
                         >
                           {l.label} →
                         </a>

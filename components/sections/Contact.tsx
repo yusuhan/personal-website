@@ -36,7 +36,7 @@ export default function Contact() {
                 href={s.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm font-medium text-muted transition-colors hover:text-foreground"
+                className="link-underline text-sm font-medium text-muted transition-colors hover:text-foreground"
               >
                 {s.label} →
               </a>
