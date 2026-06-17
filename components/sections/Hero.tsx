@@ -7,10 +7,24 @@ import { profile } from "@/data/profile";
 const delay = (s: number): CSSProperties =>
   ({ "--reveal-delay": `${s}s` }) as CSSProperties;
 
+// 克莱因蓝(International Klein Blue):仅在 Hero 内做点缀,不改全局 --accent。
+const KLEIN = "#002FA7";
+
+// 浅冷调底:近白但隐约偏冷,叠一层极轻的上→下渐变增加层次(幅度很小)。
+const coolBg: CSSProperties = {
+  background:
+    "linear-gradient(180deg, #F7F9FC 0%, #F3F5FB 55%, #EEF1F8 100%)",
+};
+
+// 把定位语里的「RAG 与部署」用克莱因蓝高亮,其余保持近黑。
+const HIGHLIGHT = "RAG 与部署";
+const [tagBefore, tagAfter] = profile.tagline.split(HIGHLIGHT);
+
 export default function Hero() {
   return (
     <section
       aria-label="简介"
+      style={coolBg}
       className="flex min-h-screen flex-col items-center justify-center px-6 text-center"
     >
       <h1
@@ -25,7 +39,11 @@ export default function Hero() {
         style={delay(0.15)}
         className="mt-6 max-w-2xl text-base leading-relaxed text-foreground sm:text-lg"
       >
-        {profile.tagline}
+        {tagBefore}
+        <span className="font-medium" style={{ color: KLEIN }}>
+          {HIGHLIGHT}
+        </span>
+        {tagAfter}
       </p>
 
       <p
@@ -43,7 +61,8 @@ export default function Hero() {
       >
         <a
           href="#products"
-          className="inline-flex min-h-[44px] items-center justify-center rounded-full bg-accent px-6 py-2.5 text-sm font-medium text-accent-foreground transition-colors hover:bg-accent-hover"
+          style={{ backgroundColor: KLEIN }}
+          className="inline-flex min-h-[44px] items-center justify-center rounded-full px-6 py-2.5 text-sm font-medium text-white transition-opacity hover:opacity-90"
         >
           看作品
         </a>
