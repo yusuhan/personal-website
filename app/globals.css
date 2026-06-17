@@ -1,47 +1,61 @@
 @import "tailwindcss";
 
-/*
- * 配色：极简高对比
- * 背景近白、前景近黑、单一克制强调色（靛蓝）。
- * 暗色模式变量已预留，随系统切换。
- */
+/* ============================================================
+ * 视觉系统 Tokens —— 现代明亮 / 浅色 / 单一强调色
+ * ============================================================ */
 :root {
-  --background: #fafafa;   /* 近白 */
-  --foreground: #111111;   /* 近黑 */
-  --muted: #6b7280;        /* 次要文字 */
-  --border: #e5e7eb;       /* 分隔线 */
-  --accent: #2563eb;       /* 克制的强调色 */
+  /* 中性色阶(zinc) */
+  --background: #fbfbfd;        /* 近白,非纯白 */
+  --surface: #ffffff;          /* 卡片等表面 */
+  --foreground: #18181b;       /* 近黑正文 */
+  --muted: #71717a;            /* 次要文字 zinc-500 */
+  --muted-strong: #52525b;     /* 稍重的次要文字 zinc-600 */
+  --border: #e4e4e7;           /* 细边框 zinc-200 */
+  --border-strong: #d4d4d8;    /* 略重边框 zinc-300 */
+
+  /* 强调色(可替换) */
+  --accent: #4f46e5;           /* indigo-600 */
+  --accent-hover: #4338ca;     /* indigo-700 */
   --accent-foreground: #ffffff;
+
+  /* 圆角 */
+  --radius: 0.75rem;           /* rounded-xl 基准 */
+
+  /* 极轻阴影(浅色主题不要重投影) */
+  --shadow-card: 0 1px 2px 0 rgb(24 24 27 / 0.04),
+    0 1px 3px 0 rgb(24 24 27 / 0.06);
+  --shadow-card-hover: 0 4px 12px -2px rgb(24 24 27 / 0.10),
+    0 2px 6px -2px rgb(24 24 27 / 0.06);
+
+  /* 字体栈:拉丁文 Inter,中文回退苹方等 */
+  --font-sans-stack:
+    var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC",
+    "Source Han Sans SC", "Helvetica Neue", Arial, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #f5f5f5;
-    --muted: #9ca3af;
-    --border: #262626;
-    --accent: #60a5fa;
-    --accent-foreground: #0a0a0a;
-  }
+/* 本站强制浅色主题:不跟随系统深色模式。
+ * 如需深色,改为基于 .dark 类名的显式切换,不要用 prefers-color-scheme。*/
+:root {
+  color-scheme: light;
 }
 
+/* 映射到 Tailwind 工具类 */
 @theme inline {
   --color-background: var(--background);
+  --color-surface: var(--surface);
   --color-foreground: var(--foreground);
   --color-muted: var(--muted);
+  --color-muted-strong: var(--muted-strong);
   --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
   --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
   --color-accent-foreground: var(--accent-foreground);
   --font-sans: var(--font-sans-stack);
-}
-
-/* 对中文友好的无衬线字体栈 */
-:root {
-  --font-sans-stack:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
-    "Noto Sans SC", "Source Han Sans SC", "WenQuanYi Micro Hei",
-    "Helvetica Neue", Arial, sans-serif;
+  --radius-xl: var(--radius);
+  --shadow-card: var(--shadow-card);
+  --shadow-card-hover: var(--shadow-card-hover);
 }
 
 html {

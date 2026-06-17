@@ -14,7 +14,7 @@ export interface Profile {
 
 export const profile: Profile = {
   name: "余苏涵",
-  tagline: "专注 LLM 应用层:从评测、Prompt 到 RAG 与部署的全链路交付",
+  tagline: "专注 LLM 应用层：从评测、Prompt 到 RAG 与部署的全链路交付",
   email: "suhanyu143@gmail.com",
   resumeUrl: "/resume.pdf",
   socials: [

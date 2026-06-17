@@ -6,15 +6,15 @@ import { products } from "@/data/products";
 export default function Products() {
   return (
     <section id="products" className="scroll-mt-20 py-24 sm:py-28">
-      <Container>
+      <Container size="wide">
         <SectionHeading label="Products" title="作品" />
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
           {products.map((p, i) => (
             <Reveal key={p.title} delay={i * 0.08}>
-              <article className="flex h-full flex-col overflow-hidden rounded-2xl border border-border transition-colors hover:border-foreground/30">
+              <article className="flex h-full flex-col overflow-hidden rounded-xl border border-border bg-surface shadow-card transition-colors">
                 {/* 缩略图位 */}
-                <div className="flex aspect-video items-center justify-center bg-foreground/[0.04] text-xs text-muted">
+                <div className="flex aspect-video items-center justify-center border-b border-border bg-foreground/[0.03] text-xs text-muted">
                   {p.image ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
