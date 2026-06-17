@@ -4,28 +4,28 @@
  * 视觉系统 Tokens —— 现代明亮 / 浅色 / 单一强调色
  * ============================================================ */
 :root {
-  /* 中性色阶(zinc) */
-  --background: #fbfbfd;        /* 近白,非纯白 */
-  --surface: #ffffff;          /* 卡片等表面 */
-  --foreground: #18181b;       /* 近黑正文 */
-  --muted: #71717a;            /* 次要文字 zinc-500 */
-  --muted-strong: #52525b;     /* 稍重的次要文字 zinc-600 */
-  --border: #e4e4e7;           /* 细边框 zinc-200 */
-  --border-strong: #d4d4d8;    /* 略重边框 zinc-300 */
+  /* 中性色阶(冷调 slate) */
+  --background: #eef1f8;        /* 浅冷调底,肉眼可见偏冷 */
+  --surface: #ffffff;          /* 卡片等表面用纯白,在冷底上"浮"起来 */
+  --foreground: #16181d;       /* 近黑正文(略带冷) */
+  --muted: #5c6273;            /* 次要文字(冷灰,在冷底上达 AA) */
+  --muted-strong: #3f4452;     /* 稍重的次要文字 */
+  --border: #dde2ec;           /* 细边框(冷灰) */
+  --border-strong: #c9d0de;    /* 略重边框 */
 
-  /* 强调色(可替换) */
-  --accent: #4f46e5;           /* indigo-600 */
-  --accent-hover: #4338ca;     /* indigo-700 */
+  /* 强调色:克莱因蓝 International Klein Blue(全站统一) */
+  --accent: #002fa7;
+  --accent-hover: #002184;
   --accent-foreground: #ffffff;
 
   /* 圆角 */
   --radius: 0.75rem;           /* rounded-xl 基准 */
 
-  /* 极轻阴影(浅色主题不要重投影) */
-  --shadow-card: 0 1px 2px 0 rgb(24 24 27 / 0.04),
-    0 1px 3px 0 rgb(24 24 27 / 0.06);
-  --shadow-card-hover: 0 4px 12px -2px rgb(24 24 27 / 0.10),
-    0 2px 6px -2px rgb(24 24 27 / 0.06);
+  /* 柔和阴影:让纯白卡片在冷调底上明确浮起,但不重 */
+  --shadow-card: 0 1px 2px 0 rgb(22 24 41 / 0.05),
+    0 4px 12px -3px rgb(22 24 41 / 0.08);
+  --shadow-card-hover: 0 6px 20px -4px rgb(0 47 167 / 0.16),
+    0 4px 10px -4px rgb(22 24 41 / 0.10);
 
   /* 字体栈:拉丁文 Inter,中文回退苹方等 */
   --font-sans-stack:
