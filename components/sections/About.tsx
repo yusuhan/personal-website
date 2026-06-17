@@ -22,14 +22,23 @@ export default function About() {
                 >
                   <span className="absolute -left-[5px] top-1 h-2.5 w-2.5 rounded-full bg-accent" />
                   <p className="text-sm text-muted">{e.period}</p>
-                  <h3 className="mt-1 text-lg font-semibold tracking-tight">
-                    {e.role} · {e.org}
-                  </h3>
-                  <ul className="mt-3 list-disc space-y-1.5 pl-5 text-sm leading-relaxed text-muted marker:text-border">
-                    {e.points.map((pt) => (
-                      <li key={pt}>{pt}</li>
-                    ))}
-                  </ul>
+                  <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1">
+                    <h3 className="text-lg font-semibold tracking-tight">
+                      {e.role} · {e.org}
+                    </h3>
+                    {e.tag && (
+                      <span className="rounded-full border border-border px-2 py-0.5 text-xs text-muted">
+                        {e.tag}
+                      </span>
+                    )}
+                  </div>
+                  {e.points.length > 0 && (
+                    <ul className="mt-3 list-disc space-y-1.5 pl-5 text-sm leading-relaxed text-muted marker:text-border">
+                      {e.points.map((pt) => (
+                        <li key={pt}>{pt}</li>
+                      ))}
+                    </ul>
+                  )}
                 </div>
               </Reveal>
             );

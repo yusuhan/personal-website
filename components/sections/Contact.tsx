@@ -22,18 +22,20 @@ export default function Contact() {
           </a>
 
           <div className="mt-8 flex flex-wrap items-center gap-4">
-            <a
-              href={profile.resumeUrl}
-              className="rounded-full bg-accent px-6 py-2.5 text-sm font-medium text-accent-foreground transition-opacity hover:opacity-90"
-            >
-              下载简历
-            </a>
+            {profile.resumeUrl && (
+              <a
+                href={profile.resumeUrl}
+                className="rounded-full bg-accent px-6 py-2.5 text-sm font-medium text-accent-foreground transition-colors hover:bg-accent-hover"
+              >
+                下载简历
+              </a>
+            )}
             {profile.socials.map((s) => (
               <a
                 key={s.label}
                 href={s.url}
                 target="_blank"
-                rel="noreferrer"
+                rel="noopener noreferrer"
                 className="text-sm font-medium text-muted transition-colors hover:text-foreground"
               >
                 {s.label} →
