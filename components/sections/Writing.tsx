@@ -5,9 +5,13 @@ import { articles } from "@/data/articles";
 
 export default function Writing() {
   return (
-    <section id="writing" aria-label="文章" className="scroll-mt-20 py-24 sm:py-28">
+    <section
+      id="writing"
+      aria-label="文章"
+      className="scroll-mt-20 bg-[#f4f6fb] py-24 sm:py-28"
+    >
       <Container>
-        <SectionHeading label="Writing" title="文章" />
+        <SectionHeading index="02" label="Writing" title="文章" />
 
         <div className="border-t border-border">
           {articles.map((a, i) => (

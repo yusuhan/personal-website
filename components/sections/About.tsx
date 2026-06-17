@@ -5,9 +5,13 @@ import { experiences } from "@/data/experience";
 
 export default function About() {
   return (
-    <section id="about" aria-label="经历" className="scroll-mt-20 py-24 sm:py-28">
+    <section
+      id="about"
+      aria-label="经历"
+      className="scroll-mt-20 bg-white py-24 sm:py-28"
+    >
       <Container>
-        <SectionHeading label="Experience" title="经历" />
+        <SectionHeading index="03" label="Experience" title="经历" />
 
         <div>
           {experiences.map((e, i) => {

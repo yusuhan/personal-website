@@ -14,9 +14,13 @@ function orderLinks<T extends { label: string }>(links: T[]) {
 
 export default function Products() {
   return (
-    <section id="products" aria-label="作品" className="scroll-mt-20 py-24 sm:py-28">
+    <section
+      id="products"
+      aria-label="作品"
+      className="scroll-mt-20 bg-white py-24 sm:py-28"
+    >
       <Container size="wide">
-        <SectionHeading label="Products" title="作品" />
+        <SectionHeading index="01" label="Products" title="作品" />
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
           {products.map((p, i) => (
