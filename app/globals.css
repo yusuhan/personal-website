@@ -64,16 +64,26 @@ html {
 }
 
 /* ============================================================
- * 进场动画 —— SSR / 无 JS / 水合失败 / 减弱动效 时,内容默认完整可见。
- * 仅在 <html class="js">(由前置内联脚本添加)且用户未开启 reduced-motion
- * 时,才施加「初始隐藏 → 进场淡入上移」。
+ * 进场动画 —— 核心原则:可见性绝不依赖 React 水合。
+ *
+ * 1) 无 JS:没有任何隐藏规则,内容默认可见(opacity 初始即 1)。
+ * 2) 首屏 Hero(data-reveal-load):纯 CSS 载入动画,页面加载即播放,
+ *    不依赖滚动、不依赖 React——只要 CSS 生效就淡入。即便 React 未水合
+ *    (如某些移动端 dev 环境),Hero 仍会正常显现。
+ * 3) 滚动区块(data-reveal):由 Reveal 组件成功挂载后才"武装"
+ *    (加 .reveal-armed)隐藏自己,再在进入视口时加 .is-visible 显示。
+ *    若 React 未水合,元素从不被武装,保持默认可见。
  * ============================================================ */
-[data-reveal] {
-  opacity: 1; /* 默认可见,是兜底基线 */
-}
-
 @media (prefers-reduced-motion: no-preference) {
-  html.js [data-reveal] {
+  /* 首屏:加载即进场,纯 CSS,不依赖任何 JS 逻辑 */
+  html.js [data-reveal-load] {
+    opacity: 0;
+    animation: reveal-up 0.6s ease-out both;
+    animation-delay: var(--reveal-delay, 0s);
+  }
+
+  /* 滚动区块:仅当组件挂载并"武装"后才隐藏,然后进入视口时显示 */
+  [data-reveal].reveal-armed {
     opacity: 0;
     transform: translateY(20px);
     transition:
@@ -82,7 +92,18 @@ html {
     transition-delay: var(--reveal-delay, 0s);
     will-change: opacity, transform;
   }
-  html.js [data-reveal].is-visible {
+  [data-reveal].reveal-armed.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
     opacity: 1;
     transform: none;
   }

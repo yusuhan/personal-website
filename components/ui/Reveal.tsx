@@ -12,10 +12,10 @@ interface RevealProps {
 /**
  * 进入视口时淡入 + 轻微上移,只触发一次。
  *
- * SSR / 无 JS / 水合失败 / 减弱动效 时:元素默认可见(见 globals.css 的
- * `[data-reveal] { opacity: 1 }`),不依赖 JS。仅当 <html class="js"> 且用户
- * 未开启 prefers-reduced-motion 时,CSS 才把它初始隐藏,再由本组件在进入视口
- * 时加上 `is-visible` 触发过渡。
+ * 可见性不依赖 React 水合:元素默认可见。只有本组件成功挂载(React 已水合)
+ * 且未开启 reduced-motion 时,才给自己加 `reveal-armed` 隐藏(见 globals.css),
+ * 再在进入视口时加 `is-visible` 触发过渡。若水合失败,组件不挂载、不武装,
+ * 元素保持可见——绝不会出现空白。
  */
 export default function Reveal({ children, delay = 0, className }: RevealProps) {
   const ref = useRef<HTMLDivElement>(null);
@@ -24,11 +24,14 @@ export default function Reveal({ children, delay = 0, className }: RevealProps) 
     const el = ref.current;
     if (!el) return;
 
-    // 减弱动效:CSS 已让其保持可见,无需观察。
+    // 减弱动效:不武装、保持默认可见。
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      el.classList.add("is-visible");
       return;
     }
+
+    // 只有组件成功挂载(即 React 已水合)才"武装"隐藏自己。
+    // 若水合失败,这段代码不会执行,元素保持默认可见——绝不空白。
+    el.classList.add("reveal-armed");
 
     const io = new IntersectionObserver(
       (entries) => {
