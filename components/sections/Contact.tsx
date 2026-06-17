@@ -5,7 +5,7 @@ import { profile } from "@/data/profile";
 
 export default function Contact() {
   return (
-    <section id="contact" className="scroll-mt-20 py-24 sm:py-28">
+    <section id="contact" aria-label="联系" className="scroll-mt-20 py-24 sm:py-28">
       <Container>
         <SectionHeading label="Contact" title="联系" />
 

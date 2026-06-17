@@ -5,7 +5,7 @@ import { experiences } from "@/data/experience";
 
 export default function About() {
   return (
-    <section id="about" className="scroll-mt-20 py-24 sm:py-28">
+    <section id="about" aria-label="经历" className="scroll-mt-20 py-24 sm:py-28">
       <Container>
         <SectionHeading label="Experience" title="经历" />
 

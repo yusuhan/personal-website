@@ -5,7 +5,7 @@ import { articles } from "@/data/articles";
 
 export default function Writing() {
   return (
-    <section id="writing" className="scroll-mt-20 py-24 sm:py-28">
+    <section id="writing" aria-label="文章" className="scroll-mt-20 py-24 sm:py-28">
       <Container>
         <SectionHeading label="Writing" title="文章" />
 
@@ -15,7 +15,7 @@ export default function Writing() {
               <a
                 href={a.url}
                 target="_blank"
-                rel="noreferrer"
+                rel="noopener noreferrer"
                 className="group flex flex-col gap-2 border-b border-border py-6 transition-colors sm:flex-row sm:items-baseline sm:justify-between sm:gap-6"
               >
                 <div className="sm:flex-1">

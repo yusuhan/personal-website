@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Container from "@/components/ui/Container";
 import Reveal from "@/components/ui/Reveal";
 import SectionHeading from "@/components/ui/SectionHeading";
@@ -13,7 +14,7 @@ function orderLinks<T extends { label: string }>(links: T[]) {
 
 export default function Products() {
   return (
-    <section id="products" className="scroll-mt-20 py-24 sm:py-28">
+    <section id="products" aria-label="作品" className="scroll-mt-20 py-24 sm:py-28">
       <Container size="wide">
         <SectionHeading label="Products" title="作品" />
 
@@ -22,13 +23,14 @@ export default function Products() {
             <Reveal key={p.title} delay={i * 0.08}>
               <article className="flex h-full flex-col overflow-hidden rounded-xl border border-border bg-surface shadow-card transition duration-300 ease-out hover:border-accent hover:shadow-card-hover motion-safe:hover:-translate-y-1">
                 {/* 缩略图位 */}
-                <div className="flex aspect-video items-center justify-center border-b border-border bg-foreground/[0.03] text-xs text-muted">
+                <div className="relative flex aspect-video items-center justify-center overflow-hidden border-b border-border bg-foreground/[0.03] text-xs text-muted">
                   {p.image ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
+                    <Image
                       src={p.image}
-                      alt={p.title}
-                      className="h-full w-full object-cover"
+                      alt={`${p.title} 项目预览图`}
+                      fill
+                      sizes="(max-width: 640px) 100vw, 50vw"
+                      className="object-cover"
                     />
                   ) : (
                     "缩略图"

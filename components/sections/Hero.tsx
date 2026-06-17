@@ -9,7 +9,10 @@ const delay = (s: number): CSSProperties =>
 
 export default function Hero() {
   return (
-    <section className="flex min-h-screen flex-col items-center justify-center px-6 text-center">
+    <section
+      aria-label="简介"
+      className="flex min-h-screen flex-col items-center justify-center px-6 text-center"
+    >
       <h1
         data-reveal-load
         className="text-4xl font-semibold tracking-tight sm:text-6xl"
