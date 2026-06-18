@@ -14,7 +14,8 @@ const ENDPOINT = "https://api.siliconflow.cn/v1/chat/completions";
 const UPSTREAM_TIMEOUT_MS = 30_000; // 单次上游请求超时
 const MAX_ATTEMPTS = 2; // 总尝试次数(=首次 + 1 次重试)
 // 7B 在复制邮箱/数字这类任务上会乱码/编造,改用 14B(可靠性显著更好,成本仍低)。
-const MODEL = process.env.SILICONFLOW_MODEL || "Qwen/Qwen2.5-14B-Instruct";
+const SAFE_MODEL = "Qwen/Qwen2.5-14B-Instruct"; // 已知可用的兜底模型
+const MODEL = process.env.SILICONFLOW_MODEL || SAFE_MODEL;
 
 // —— 滥用防护 ——
 const MAX_INPUT_CHARS = 500; // 单条用户输入上限
@@ -134,14 +135,16 @@ export async function POST(req: Request) {
   }
 
   // 4) 调用 SiliconFlow(OpenAI 兼容),带超时 + 失败自动重试一次
-  const payload = JSON.stringify({
-    model: MODEL,
-    messages: [{ role: "system", content: systemPrompt() }, ...history],
-    max_tokens: 360,
-    temperature: 0.3,
-    frequency_penalty: 0.3,
-  });
+  const buildPayload = (model: string) =>
+    JSON.stringify({
+      model,
+      messages: [{ role: "system", content: systemPrompt() }, ...history],
+      max_tokens: 360,
+      temperature: 0.3,
+      frequency_penalty: 0.3,
+    });
 
+  let currentModel = MODEL;
   let lastErr = "";
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
     try {
@@ -151,19 +154,24 @@ export async function POST(req: Request) {
           Authorization: `Bearer ${key}`,
           "Content-Type": "application/json",
         },
-        body: payload,
+        body: buildPayload(currentModel),
         signal: AbortSignal.timeout(UPSTREAM_TIMEOUT_MS),
       });
 
       if (!upstream.ok) {
         const detail = await upstream.text().catch(() => "");
-        lastErr = `status ${upstream.status}`;
+        lastErr = `status ${upstream.status} (${currentModel})`;
         console.error(
-          `SiliconFlow error (attempt ${attempt}/${MAX_ATTEMPTS})`,
+          `SiliconFlow error (attempt ${attempt}/${MAX_ATTEMPTS}, model ${currentModel})`,
           upstream.status,
           detail.slice(0, 200),
         );
-        // 4xx(鉴权/参数错误)重试无意义,直接跳出降级
+        // 400 多为"模型名无效":若配置的模型不是内置兜底模型,改用兜底模型再试一次
+        if (upstream.status === 400 && currentModel !== SAFE_MODEL) {
+          currentModel = SAFE_MODEL;
+          continue;
+        }
+        // 其余 4xx(鉴权/参数)重试无意义,直接降级
         if (upstream.status >= 400 && upstream.status < 500) break;
         if (attempt < MAX_ATTEMPTS) {
           await new Promise((r) => setTimeout(r, 600));
