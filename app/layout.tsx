@@ -12,8 +12,8 @@ const inter = Inter({
 
 const title = "余苏涵 | LLM 应用工程师";
 const description = `${profile.tagline}。`;
-// TODO: 部署到 Vercel 后改成真实域名,OG/Twitter 的绝对 URL 依赖它
-const siteUrl = "https://yusuhan.vercel.app";
+// Vercel 部署域名,OG/Twitter 的绝对 URL 依赖它
+const siteUrl = "https://personal-website-lac-omega.vercel.app";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
