@@ -6,8 +6,13 @@ import { experiences } from "@/data/experience";
 
 // 需要读 env / 用 Node 运行时
 export const runtime = "nodejs";
+// 允许函数最长运行 30s —— Vercel Serverless 默认 10s 会先杀掉函数,
+// 不放宽的话下面 30s 的上游超时根本等不到(冷启动+首响应慢时尤其明显)。
+export const maxDuration = 30;
 
 const ENDPOINT = "https://api.siliconflow.cn/v1/chat/completions";
+const UPSTREAM_TIMEOUT_MS = 30_000; // 单次上游请求超时
+const MAX_ATTEMPTS = 2; // 总尝试次数(=首次 + 1 次重试)
 // 7B 在复制邮箱/数字这类任务上会乱码/编造,改用 14B(可靠性显著更好,成本仍低)。
 const MODEL = process.env.SILICONFLOW_MODEL || "Qwen/Qwen2.5-14B-Instruct";
 
@@ -128,53 +133,73 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "bad_request" }, { status: 400 });
   }
 
-  // 4) 调用 SiliconFlow(OpenAI 兼容),带超时
-  try {
-    const upstream = await fetch(ENDPOINT, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${key}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: MODEL,
-        messages: [{ role: "system", content: systemPrompt() }, ...history],
-        max_tokens: 360,
-        temperature: 0.3,
-        frequency_penalty: 0.3,
-      }),
-      signal: AbortSignal.timeout(20_000),
-    });
+  // 4) 调用 SiliconFlow(OpenAI 兼容),带超时 + 失败自动重试一次
+  const payload = JSON.stringify({
+    model: MODEL,
+    messages: [{ role: "system", content: systemPrompt() }, ...history],
+    max_tokens: 360,
+    temperature: 0.3,
+    frequency_penalty: 0.3,
+  });
 
-    if (!upstream.ok) {
-      const detail = await upstream.text().catch(() => "");
-      console.error("SiliconFlow error", upstream.status, detail.slice(0, 200));
-      return NextResponse.json(
-        { error: "upstream", message: "AI 分身现在有点忙,稍后再试或看看预设问答。" },
-        { status: 502 },
-      );
-    }
+  let lastErr = "";
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+    try {
+      const upstream = await fetch(ENDPOINT, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${key}`,
+          "Content-Type": "application/json",
+        },
+        body: payload,
+        signal: AbortSignal.timeout(UPSTREAM_TIMEOUT_MS),
+      });
 
-    const data = await upstream.json();
-    const reply: string | undefined = data?.choices?.[0]?.message?.content;
-    if (!reply) {
-      return NextResponse.json(
-        { error: "empty", message: "没收到有效回答,稍后再试。" },
-        { status: 502 },
-      );
+      if (!upstream.ok) {
+        const detail = await upstream.text().catch(() => "");
+        lastErr = `status ${upstream.status}`;
+        console.error(
+          `SiliconFlow error (attempt ${attempt}/${MAX_ATTEMPTS})`,
+          upstream.status,
+          detail.slice(0, 200),
+        );
+        // 4xx(鉴权/参数错误)重试无意义,直接跳出降级
+        if (upstream.status >= 400 && upstream.status < 500) break;
+        if (attempt < MAX_ATTEMPTS) {
+          await new Promise((r) => setTimeout(r, 600));
+          continue;
+        }
+        break;
+      }
+
+      const data = await upstream.json();
+      const reply: string | undefined = data?.choices?.[0]?.message?.content;
+      if (reply && reply.trim()) {
+        return NextResponse.json({ reply: reply.trim() });
+      }
+      lastErr = "empty";
+      if (attempt < MAX_ATTEMPTS) {
+        await new Promise((r) => setTimeout(r, 600));
+        continue;
+      }
+    } catch (e) {
+      lastErr = e instanceof Error ? e.name : "unknown";
+      console.error(`chat route error (attempt ${attempt}/${MAX_ATTEMPTS})`, e);
+      // 超时 / 网络错误:还有机会就重试(冷启动后第二次通常已热)
+      if (attempt < MAX_ATTEMPTS) {
+        await new Promise((r) => setTimeout(r, 600));
+        continue;
+      }
     }
-    return NextResponse.json({ reply: reply.trim() });
-  } catch (e) {
-    const aborted = e instanceof Error && e.name === "TimeoutError";
-    console.error("chat route error", e);
-    return NextResponse.json(
-      {
-        error: aborted ? "timeout" : "internal",
-        message: aborted
-          ? "AI 分身响应超时了,稍后再试或看看预设问答。"
-          : "出了点小问题,稍后再试或看看预设问答。",
-      },
-      { status: aborted ? 504 : 500 },
-    );
   }
+
+  // 两次都失败 → 降级,前端据此展示预设问答
+  return NextResponse.json(
+    {
+      error: "upstream",
+      message: "AI 分身现在有点忙,稍后再试或看看预设问答。",
+      detail: lastErr,
+    },
+    { status: 502 },
+  );
 }
