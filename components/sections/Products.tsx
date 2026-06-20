@@ -128,17 +128,14 @@ export default function Products() {
       <Container size="wide" className="relative z-10">
         <SectionHeading index="01" label="Products" title="作品" tone="onAccent" />
 
-        {/* 两张卡片左右错位:一张偏左上、一张偏右下 */}
-        <div className="mt-4 flex flex-col gap-10 lg:mt-8 lg:block">
+        {/* 桌面:双列错位,两张卡片各占约一半、横向铺满蓝块;
+            第二张整体下移做交错。移动端:单列堆叠(不强行错位)。 */}
+        <div className="mt-4 grid grid-cols-1 gap-10 lg:mt-6 lg:grid-cols-2 lg:items-start lg:gap-8">
           {products.map((p, i) => (
             <Reveal
               key={p.title}
               delay={i * 0.1}
-              className={
-                i === 0
-                  ? "lg:w-[47%]"
-                  : "lg:ml-auto lg:-mt-28 lg:w-[47%]"
-              }
+              className={i === 1 ? "lg:mt-28" : undefined}
             >
               <Card p={p} />
             </Reveal>
