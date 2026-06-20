@@ -35,7 +35,7 @@ export default function SectionHeading({
         </p>
       </div>
       <h2
-        className={`mt-4 text-4xl font-bold tracking-tight sm:text-5xl ${
+        className={`title-wipe mt-4 font-display text-5xl font-black leading-[0.95] tracking-tight sm:text-7xl ${
           dark ? "text-white" : ""
         }`}
       >

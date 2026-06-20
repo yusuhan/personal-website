@@ -32,6 +32,14 @@
     var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI",
     "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC",
     "Source Han Sans SC", "Helvetica Neue", Arial, sans-serif;
+
+  /* 展示字栈:拉丁 Anton(condensed black)+ 中文思源黑体 Heavy(900) */
+  --font-display-stack:
+    var(--font-anton), var(--font-noto-sc), "PingFang SC", "Microsoft YaHei",
+    "Source Han Sans SC", sans-serif;
+
+  /* 签名缓动(借鉴 wodniack 的 expo:猛冲出场、缓缓落定) */
+  --ease-expo: cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 /* 本站强制浅色主题:不跟随系统深色模式。
@@ -53,6 +61,7 @@
   --color-accent-hover: var(--accent-hover);
   --color-accent-foreground: var(--accent-foreground);
   --font-sans: var(--font-sans-stack);
+  --font-display: var(--font-display-stack);
   --radius-xl: var(--radius);
   --shadow-card: var(--shadow-card);
   --shadow-card-hover: var(--shadow-card-hover);
@@ -78,23 +87,34 @@ html {
   /* 首屏:加载即进场,纯 CSS,不依赖任何 JS 逻辑 */
   html.js [data-reveal-load] {
     opacity: 0;
-    animation: reveal-up 0.6s ease-out both;
+    animation: reveal-up 0.7s var(--ease-expo) both;
     animation-delay: var(--reveal-delay, 0s);
   }
 
   /* 滚动区块:仅当组件挂载并"武装"后才隐藏,然后进入视口时显示 */
   [data-reveal].reveal-armed {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(24px);
     transition:
-      opacity 0.5s ease-out,
-      transform 0.5s ease-out;
+      opacity 0.7s var(--ease-expo),
+      transform 0.7s var(--ease-expo);
     transition-delay: var(--reveal-delay, 0s);
     will-change: opacity, transform;
   }
   [data-reveal].reveal-armed.is-visible {
     opacity: 1;
     transform: none;
+  }
+
+  /* 区块大标题:在 Reveal 武装/显示时做自下而上的遮罩擦除(clip-path),
+     比纯淡入更有"揭示"的设计感。无 JS 时不武装 → 标题完整可见。 */
+  [data-reveal].reveal-armed .title-wipe {
+    clip-path: inset(0 0 110% 0);
+  }
+  [data-reveal].reveal-armed.is-visible .title-wipe {
+    clip-path: inset(0 0 -10% 0);
+    transition: clip-path 0.9s var(--ease-expo);
+    transition-delay: calc(var(--reveal-delay, 0s) + 0.05s);
   }
 }
 
@@ -113,7 +133,7 @@ html {
  * 元素立即以满不透明度绘制,不拖慢 LCP,仍保留细微上浮的"活感"。 */
 @media (prefers-reduced-motion: no-preference) {
   html.js [data-reveal-rise] {
-    animation: reveal-rise 0.6s ease-out both;
+    animation: reveal-rise 0.6s var(--ease-expo) both;
     animation-delay: var(--reveal-delay, 0s);
   }
 }
@@ -123,6 +143,37 @@ html {
   }
   to {
     transform: none;
+  }
+}
+
+/* ============================================================
+ * 遮罩揭示(mask reveal)—— Hero 招牌:大字分块,从遮罩后向上揭开。
+ * 加载即播放,不依赖滚动。无 JS / reduced-motion 时:内层无位移,
+ * 字符正常落位、完整可见(overflow:hidden 不会裁掉未位移的字)。
+ * ============================================================ */
+.char-mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  /* 给上方留出溢出空间,避免极粗字形顶部被裁;配合 line-height 使用 */
+  padding-top: 0.12em;
+  margin-top: -0.12em;
+}
+.char-inner {
+  display: inline-block;
+  will-change: transform;
+}
+@media (prefers-reduced-motion: no-preference) {
+  html.js [data-mask] .char-inner {
+    transform: translateY(115%);
+    animation: mask-rise 0.62s var(--ease-expo) both;
+    /* 逐字错位:由内联 --i 提供序号。保持快,避免拖慢 LCP(名字是 LCP 元素) */
+    animation-delay: calc(var(--i, 0) * 0.05s + 0.04s);
+  }
+}
+@keyframes mask-rise {
+  to {
+    transform: translateY(0);
   }
 }
 
