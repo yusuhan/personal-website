@@ -37,13 +37,6 @@ export default function Hero() {
       {/* 装饰层(纯装饰,pointer-events:none) */}
       <div aria-hidden className="hero-aurora pointer-events-none" />
       <div aria-hidden className="hero-grid pointer-events-none" />
-      {/* 巨大低透明度克莱因蓝水印「余」,出血到左下角 */}
-      <span
-        aria-hidden
-        className="pointer-events-none absolute -bottom-[10vw] -left-[3vw] z-0 select-none font-display text-[44vw] font-black leading-none text-accent/[0.05]"
-      >
-        余
-      </span>
       <HeroPointerGlow />
 
       <div className="relative z-10 mx-auto w-full max-w-6xl px-6 lg:grid lg:grid-cols-12 lg:items-center lg:gap-6">

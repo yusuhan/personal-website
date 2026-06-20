@@ -94,8 +94,27 @@ export default function Products() {
     <section
       id="products"
       aria-label="作品"
-      className="relative scroll-mt-20 overflow-hidden bg-accent py-24 text-cream sm:py-28"
+      className="relative scroll-mt-20 overflow-hidden py-24 text-cream sm:py-28"
+      // 同色系微妙明度渐变(左上略深 → 右下略亮),替代死板平涂
+      style={{
+        background:
+          "linear-gradient(145deg, #00227a 0%, #002fa7 52%, #0b3bb6 100%)",
+      }}
     >
+      {/* 极淡颗粒纹理,增加材质感(soft-light 只调明度) */}
+      <div
+        aria-hidden
+        className="grain pointer-events-none absolute inset-0 z-0 opacity-[0.5] mix-blend-soft-light"
+      />
+      {/* 极克制的同色结构竖线,增加层次 */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 z-0"
+        style={{
+          background:
+            "repeating-linear-gradient(90deg, transparent 0, transparent 159px, rgba(255,255,255,0.03) 160px)",
+        }}
+      />
       {/* 上下边缘与米底自然衔接的极轻渐变 */}
       <div
         aria-hidden
@@ -105,13 +124,6 @@ export default function Products() {
         aria-hidden
         className="pointer-events-none absolute inset-x-0 bottom-0 z-0 h-20 bg-gradient-to-t from-[var(--background)] to-transparent"
       />
-      {/* 超大半透明暖白水印字 WORKS(拉丁,走 Anton),装饰层、可被裁切 */}
-      <span
-        aria-hidden
-        className="pointer-events-none absolute -left-[2vw] top-10 z-0 select-none font-display text-[26vw] font-black leading-none tracking-tight text-cream/[0.08] sm:top-6"
-      >
-        WORKS
-      </span>
 
       <Container size="wide" className="relative z-10">
         <SectionHeading index="01" label="Products" title="作品" tone="onAccent" />

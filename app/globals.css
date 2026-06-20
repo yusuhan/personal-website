@@ -181,6 +181,13 @@ html {
   }
 }
 
+/* 极淡颗粒纹理:给实色块增加"材质感",用 SVG 噪点平铺。
+ * 配合 mix-blend-mode: soft-light 只微调明度、不引入杂色。 */
+.grain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+}
+
 /* ============================================================
  * 装饰性交互(锦上添花,不影响内容可见性)
  * ============================================================ */
