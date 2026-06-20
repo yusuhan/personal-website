@@ -37,17 +37,24 @@ export default function Hero() {
       {/* 装饰层(纯装饰,pointer-events:none) */}
       <div aria-hidden className="hero-aurora pointer-events-none" />
       <div aria-hidden className="hero-grid pointer-events-none" />
+      {/* 巨大低透明度克莱因蓝水印「余」,出血到左下角 */}
+      <span
+        aria-hidden
+        className="pointer-events-none absolute -bottom-[10vw] -left-[3vw] z-0 select-none font-display text-[44vw] font-black leading-none text-accent/[0.05]"
+      >
+        余
+      </span>
       <HeroPointerGlow />
 
-      <div className="relative z-10 mx-auto grid w-full max-w-6xl items-center gap-12 px-6 lg:grid-cols-[1.05fr_0.95fr]">
-        {/* 左:静态文案(SSR 可见、SEO 友好) */}
-        <div>
+      <div className="relative z-10 mx-auto w-full max-w-6xl px-6 lg:grid lg:grid-cols-12 lg:items-center lg:gap-6">
+        {/* 左:静态文案(SSR 可见、SEO 友好),名字超大、适度出血到左边缘 */}
+        <div className="lg:col-span-7">
           <div
             data-reveal-load
             aria-hidden
             className="h-1.5 w-16 rounded-full bg-accent"
           />
-          <h1 className="mt-7 font-display text-7xl font-black leading-[0.92] tracking-tight sm:text-8xl lg:text-9xl">
+          <h1 className="mt-7 font-display text-[22vw] font-black leading-[0.88] tracking-tight sm:text-8xl lg:-ml-2 lg:text-[9rem] xl:text-[10.5rem]">
             <MaskedName text={profile.name} />
           </h1>
           <p
@@ -100,8 +107,12 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* 右:可对话的 AI 分身(增强,非替代) */}
-        <div data-reveal-load style={delay(0.2)} className="w-full">
+        {/* 右:AI 分身(增强,非替代),与名字纵向错位、不对称 */}
+        <div
+          data-reveal-load
+          style={delay(0.2)}
+          className="mt-12 w-full lg:col-span-5 lg:mt-28"
+        >
           <HeroChat />
         </div>
       </div>
