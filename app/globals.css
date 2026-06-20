@@ -181,6 +181,15 @@ html {
   }
 }
 
+/* 隐藏滚动条(横向滚动容器用,保留可滚动性) */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 /* 极淡颗粒纹理:给实色块增加"材质感",用 SVG 噪点平铺。
  * 配合 mix-blend-mode: soft-light 只微调明度、不引入杂色。 */
 .grain {
