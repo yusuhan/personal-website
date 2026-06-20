@@ -4,14 +4,17 @@
  * 视觉系统 Tokens —— 现代明亮 / 浅色 / 单一强调色
  * ============================================================ */
 :root {
-  /* 中性色阶(冷调 slate) */
-  --background: #eef1f8;        /* 浅冷调底,肉眼可见偏冷 */
-  --surface: #ffffff;          /* 卡片等表面用纯白,在冷底上"浮"起来 */
-  --foreground: #16181d;       /* 近黑正文(略带冷) */
-  --muted: #5c6273;            /* 次要文字(冷灰,在冷底上达 AA) */
-  --muted-strong: #3f4452;     /* 稍重的次要文字 */
-  --border: #dde2ec;           /* 细边框(冷灰) */
-  --border-strong: #c9d0de;    /* 略重边框 */
+  /* 中性色阶(暖调米色)—— 与克莱因蓝冷暖中和 */
+  --background: #f4efe6;        /* 暖米白底,肉眼可见偏暖 */
+  --surface: #fbf8f1;           /* 卡片表面:略亮的暖白,在米底上柔和浮起 */
+  --foreground: #211c15;        /* 暖近黑正文 */
+  --muted: #6a6052;             /* 次要文字(暖灰,在米底上达 AA) */
+  --muted-strong: #494134;      /* 稍重的次要文字 */
+  --border: #e6ddcc;            /* 细边框(暖灰) */
+  --border-strong: #d6cab2;     /* 略重边框 */
+
+  /* 克莱因蓝实色块上的暖白(标题/水印/正文),避免纯白的生硬反差 */
+  --cream: #f5f0e6;
 
   /* 强调色:克莱因蓝 International Klein Blue(全站统一) */
   --accent: #002fa7;
@@ -21,11 +24,11 @@
   /* 圆角 */
   --radius: 0.75rem;           /* rounded-xl 基准 */
 
-  /* 柔和阴影:让纯白卡片在冷调底上明确浮起,但不重 */
-  --shadow-card: 0 1px 2px 0 rgb(22 24 41 / 0.05),
-    0 4px 12px -3px rgb(22 24 41 / 0.08);
+  /* 柔和阴影(暖中性),让暖白卡片在米底上明确浮起但不重 */
+  --shadow-card: 0 1px 2px 0 rgb(55 42 20 / 0.06),
+    0 4px 12px -3px rgb(55 42 20 / 0.09);
   --shadow-card-hover: 0 6px 20px -4px rgb(0 47 167 / 0.16),
-    0 4px 10px -4px rgb(22 24 41 / 0.10);
+    0 4px 10px -4px rgb(55 42 20 / 0.12);
 
   /* 字体栈:拉丁文 Inter,中文回退苹方等 */
   --font-sans-stack:
@@ -60,6 +63,7 @@
   --color-accent: var(--accent);
   --color-accent-hover: var(--accent-hover);
   --color-accent-foreground: var(--accent-foreground);
+  --color-cream: var(--cream);
   --font-sans: var(--font-sans-stack);
   --font-display: var(--font-display-stack);
   --radius-xl: var(--radius);

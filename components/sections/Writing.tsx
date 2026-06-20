@@ -8,7 +8,7 @@ export default function Writing() {
     <section
       id="writing"
       aria-label="文章"
-      className="scroll-mt-20 bg-[#f4f6fb] py-24 sm:py-28"
+      className="scroll-mt-20 bg-[#efe8d9] py-24 sm:py-28"
     >
       <Container>
         <SectionHeading index="02" label="Writing" title="文章" />

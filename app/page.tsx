@@ -16,7 +16,7 @@ export default function Home() {
         <About />
         <Contact />
       </main>
-      <footer className="border-t border-white/10 bg-[#0a0c16] py-8 text-center text-sm text-white/40">
+      <footer className="border-t border-cream/15 bg-accent py-8 text-center text-sm text-cream/55">
         © {new Date().getFullYear()} 余苏涵
       </footer>
     </>

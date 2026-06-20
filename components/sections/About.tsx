@@ -8,7 +8,7 @@ export default function About() {
     <section
       id="about"
       aria-label="经历"
-      className="scroll-mt-20 bg-white py-24 sm:py-28"
+      className="scroll-mt-20 bg-[#faf6ec] py-24 sm:py-28"
     >
       <Container>
         <SectionHeading index="03" label="Experience" title="经历" />

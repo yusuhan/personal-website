@@ -16,21 +16,22 @@ export default function SectionHeading({
   tone?: "light" | "dark" | "onAccent";
   className?: string;
 }) {
-  const onColor = tone === "dark" || tone === "onAccent";
   const indexColor =
     tone === "onAccent"
-      ? "text-white/75"
+      ? "text-cream/75"
       : tone === "dark"
         ? "text-[#8AA0FF]"
         : "text-accent";
   const barColor =
     tone === "onAccent"
-      ? "bg-white/45"
+      ? "bg-cream/45"
       : tone === "dark"
         ? "bg-[#8AA0FF]/50"
         : "bg-accent/40";
   const labelColor =
-    tone === "onAccent" ? "text-white/70" : tone === "dark" ? "text-white/55" : "text-muted";
+    tone === "onAccent" ? "text-cream/70" : tone === "dark" ? "text-white/55" : "text-muted";
+  const titleColor =
+    tone === "onAccent" ? "text-cream" : tone === "dark" ? "text-white" : "";
 
   return (
     <Reveal className={className}>
@@ -42,9 +43,7 @@ export default function SectionHeading({
         </p>
       </div>
       <h2
-        className={`title-wipe mt-4 font-display text-5xl font-black leading-[0.95] tracking-tight sm:text-7xl ${
-          onColor ? "text-white" : ""
-        }`}
+        className={`title-wipe mt-4 font-display text-5xl font-black leading-[0.95] tracking-tight sm:text-7xl ${titleColor}`}
       >
         {title}
       </h2>

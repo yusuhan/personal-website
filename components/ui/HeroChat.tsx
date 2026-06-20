@@ -104,7 +104,7 @@ export default function HeroChat() {
   const empty = messages.length === 0;
 
   return (
-    <div className="flex h-[360px] w-full flex-col overflow-hidden rounded-2xl border border-border bg-white/75 shadow-card backdrop-blur sm:h-[420px]">
+    <div className="flex h-[360px] w-full flex-col overflow-hidden rounded-2xl border border-border bg-surface/80 shadow-card backdrop-blur sm:h-[420px]">
       {/* 头部 */}
       <div className="flex items-center gap-2.5 border-b border-border px-4 py-3">
         <span className="relative flex h-2 w-2">

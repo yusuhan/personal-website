@@ -94,12 +94,21 @@ export default function Products() {
     <section
       id="products"
       aria-label="作品"
-      className="relative scroll-mt-20 overflow-hidden bg-[#002fa7] py-24 text-white sm:py-28"
+      className="relative scroll-mt-20 overflow-hidden bg-accent py-24 text-cream sm:py-28"
     >
-      {/* 超大半透明白色水印字 WORKS(拉丁,走 Anton),装饰层、可被裁切 */}
+      {/* 上下边缘与米底自然衔接的极轻渐变 */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-0 z-0 h-20 bg-gradient-to-b from-[var(--background)] to-transparent"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-0 h-20 bg-gradient-to-t from-[var(--background)] to-transparent"
+      />
+      {/* 超大半透明暖白水印字 WORKS(拉丁,走 Anton),装饰层、可被裁切 */}
       <span
         aria-hidden
-        className="pointer-events-none absolute -left-[2vw] top-10 select-none font-display text-[26vw] font-black leading-none tracking-tight text-white/[0.07] sm:top-6"
+        className="pointer-events-none absolute -left-[2vw] top-10 z-0 select-none font-display text-[26vw] font-black leading-none tracking-tight text-cream/[0.08] sm:top-6"
       >
         WORKS
       </span>
